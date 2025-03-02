@@ -42,5 +42,23 @@ This project leverages **Generative AI (GenAI)** to create an intelligent **expe
 
 ---
 
-💡 **This AI-powered system enhances expense approval efficiency and reduces manual effort.**  
-🚀 **Contribute, suggest improvements, or fork the repository!**  
+## 📂 Project Setup
+
+### 1️⃣ Install Dependencies
+Ensure Python 3.8+ is installed, then run:
+```sh
+pip install -r requirements.txt
+```
+
+### 2️⃣ Set Up the Database
+Ensure PostgreSQL is running. Apply migrations if needed:
+```sh
+python manage.py migrate
+```
+
+### 3️⃣ Start the Flask Server
+Run the following command:
+```sh
+flask run
+```
+By default, it runs on [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
