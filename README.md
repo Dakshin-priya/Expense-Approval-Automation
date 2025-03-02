@@ -47,7 +47,7 @@ This project leverages **Generative AI (GenAI)** to create an intelligent **expe
 ## 📂 Project Setup
 
 ### 1️⃣ Install Dependencies
-Ensure Python 3.8+ is installed, then run:
+Ensure Python and PostgreSQL is installed, then run:
 ```sh
 pip install flask flask-cors psycopg2-binary transformers torch safetensors
 ```
