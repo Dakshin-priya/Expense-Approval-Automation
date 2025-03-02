@@ -114,7 +114,7 @@ async function classifyExpense() {
 Ensure the model file is in your project directory:
 
 ```python
-model_path = r"C:\Users\Dakshin Priya\Your-Project-Folder\model.safetensors"
+model_path = r"C:\Users\Dakshin Priya\Your-Project-Folder\model.safetensors" # Replace with your actual model path
 model = load_model(model_path)
 ```
 
