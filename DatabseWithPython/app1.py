@@ -16,10 +16,9 @@ tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
 @app.route('/predict', methods=['POST'])
 def predict_expense():
     try:
-        # Get data from frontend (expecting JSON)
-        data = request.json
-        expense_category = data.get('expenseCategory', '')
-        amount = data.get('amount', '')
+        # Get data from form
+        expense_category = request.form.get('expenseCategory', '')
+        amount = request.form.get('amount', '')
 
         if not expense_category or not amount:
             return jsonify({"error": "Missing expenseCategory or amount"}), 400
