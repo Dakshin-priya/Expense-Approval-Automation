@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Expense Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .dashboard {
+            width: 80%;
+            max-width: 1000px;
+            margin: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        button.logout-button { /* Added */
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+button.logout-button:hover { /* Added */
+    background-color: #ff5555;
+}
+
+        button.apply-vacation {
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button.apply-vacation:hover {
+            background-color: #75ace2;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #333;
+        }
+
+        thead th {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #555;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #2a2a2a;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #1e1e1e;
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #555;
+        }
+
+        .status-button {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-transform: capitalize;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .status-button.pending {
+            background-color: #ebd661;
+        }
+
+        .status-button.accepted {
+            background-color: #60e460;
+        }
+
+        .status-button.rejected {
+            background-color: #ff4500;
+        }
+
+        .status-button:hover {
+            opacity: 0.8;
+        }
+
+        .pagination {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .pagination span {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            margin: 0 2px;
+        }
+
+        .pagination span:hover {
+            background-color: #555;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        .modal-content, #caption {  
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @keyframes zoom {
+            from {transform:scale(0)} 
+            to {transform:scale(1)}
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Admin Expense Dashboard</h1>
+            <button class="apply-vacation">Apply to Vacation</button>
+            <button class="logout-button">Log Out</button> <!-- Added Log Out button -->
+        </header>
+        <table>
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Expense Category</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <!-- <th>Receipt</th> -->
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="expenseTableBody">
+                <!-- Dynamic content will be inserted here -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <span>&laquo;</span>
+            <span>&raquo;</span>
+        </div>
+    </div>
+    <!-- Modal for viewing the receipt -->
+    <div id="receiptModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="receiptImg">
+        <div id="caption"></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to render expense requests
+            function renderExpenses() {
+                const expenseTableBody = document.getElementById('expenseTableBody');
+                expenseTableBody.innerHTML = '';
+
+                //const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+                function formatDate(dateString) {
+                    // Create a Date object from the dateString
+                    const date = new Date(dateString);
+                    
+                    // Extract year, month, and day components
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add 1 to month as it's 0-indexed
+                    const day = String(date.getDate()).padStart(2, '0');
+                    
+                    // Return formatted date string in YYYY-MM-DD format
+                    return `${year}-${month}-${day}`;
+                }
+
+                // Function to update expense status
+            
+                function updateExpenseStatus(index, status) {
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+    
+                    const raw = JSON.stringify({
+                        "rid": index,
+                        "newStatus": status
+                    });
+    
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow"
+                    };
+    
+                    fetch("http://127.0.0.1:5000/update_status", requestOptions)
+                    .then((response) => response.text())
+                    .then((result) => {
+                        const row = document.getElementById(`expenseRow_${index}`);
+                        const statusButton = row.querySelector('.status-button');
+                        statusButton.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                        
+                        // Remove previous status classes
+                        statusButton.classList.remove('accepted', 'rejected');
+
+                        // Add the correct status class
+                        statusButton.classList.add(status.toLowerCase());
+
+                        console.log(result);
+
+                        // Force style update
+                        const expenseButton = row.querySelector('.status-button');
+                        expenseButton.classList.add('force-update'); // Add a temporary class
+                        const forceReflow = expenseButton.offsetWidth; // Trigger reflow by accessing offsetWidth
+                        expenseButton.classList.remove('force-update');
+                    })
+                    .catch((error) => console.error(error));
+                }
+                const requestOptions = {
+                    method: "GET",
+                    redirect: "follow"
+                  };
+                fetch('http://127.0.0.1:5000/expenses', requestOptions)
+                .then(response => response.json())
+                .then(expenses => {
+                    expenses.sort((a, b) => a[0] - b[0]);
+                    expenses.forEach((expense) => {
+                        const row = document.createElement('tr');
+                        row.id = `expenseRow_${expense[0]}`;
+                        row.innerHTML = `
+                            <td><button class="status-button ${expense[6]}">${expense[6]}</button></td>
+                            <td>${expense[2]}</td>
+                            <td>${formatDate(expense[4])}</td>
+                            <td>₹${expense[5]}</td>
+                            <!-- <td><button class="view-button" data-receipt="${expense.receiptData}">View</button></td> -->
+                            <td>
+                                ${expense[6] !== "Approved" ? `
+                                    <button class="action-button accept" data-rid="${expense[0]}">Accept</button>
+                                    <button class="action-button reject" data-rid="${expense[0]}">Reject</button>
+                                ` : ''}
+                            </td>
+                        `;
+
+                        /*
+                        // Add event listeners for accept and reject buttons
+                        document.querySelectorAll('.action-button.accept').forEach(button => {
+                            button.addEventListener('click', function() {
+                                console.log("Inside the accept event")
+                                const rid = this.getAttribute('data-rid');
+                                updateExpenseStatus(rid, 'accepted');
+                            });
+                        });
+
+                        document.querySelectorAll('.action-button.reject').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const index = this.getAttribute('data-rid');
+                                updateExpenseStatus(index, 'rejected');
+                            });
+                        });
+                        */
+                        expenseTableBody.appendChild(row);
+                    });
+                    document.getElementById('expenseTableBody').addEventListener('click', function(event) {
+                        const target = event.target;
+                        if (target.classList.contains('action-button')) {
+                            const rid = target.getAttribute('data-rid');
+                            const status = target.classList.contains('accept') ? 'accepted' : 'rejected';
+                            updateExpenseStatus(rid, status);
+                        }
+                    });
+                })
+
+                // Add event listeners for view buttons
+                /*document.querySelectorAll('.view-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const receiptData = this.getAttribute('data-receipt');
+                        showModal(receiptData);
+                    });
+                });
+                */
+            }
+
+            /*// Function to show the modal with the receipt
+            function showModal(receiptData) {
+                const modal = document.getElementById('receiptModal');
+                const modalImg = document.getElementById('receiptImg');
+                modal.style.display = "block";
+                modalImg.src = receiptData;
+
+                // Close the modal
+                const span = document.getElementsByClassName('close')[0];
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+            }*/
+
+            // Event listener for Apply Vacation button
+            document.querySelector('.apply-vacation').addEventListener('click', function() {
+                // Redirect to vacation_details.html
+                window.location.href = 'vacation details.html';
+            });
+
+            // Event listener for Log Out button
+            document.querySelector('.logout-button').addEventListener('click', function() {
+                // Redirect to main.html
+                window.location.href = 'main.html';
+            });
+
+            // Render expenses on page load
+            renderExpenses();
+        });
+    </script>
+</body>
+</html>
