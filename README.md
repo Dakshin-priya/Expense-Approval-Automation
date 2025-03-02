@@ -62,3 +62,26 @@ Run the following command:
 flask run
 ```
 By default, it runs on [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
+
+---
+
+## 📜 API Endpoints
+
+### 🔹 Expense Prediction API
+
+- **Endpoint:** `POST /predict`
+- **Request Body (JSON):**
+  ```json
+  {
+    "expenseCategory": "Travel",
+    "amount": 100
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "predicted_class": "Manager Approval Required",
+    "probabilities": [0.7, 0.2, 0.1]
+  }
+  
+---
