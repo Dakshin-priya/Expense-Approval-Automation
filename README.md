@@ -4,9 +4,9 @@
 ## 📌 Problem Statement  
 Managing expense approvals manually can be time-consuming and inefficient, especially in organizations with multiple approvers and varying approval limits. The **Expense Approval Workflow** powered by a **Small Language Model (SLM)** streamlines this process by automating key aspects:  
 
-- 🔹 **Automatic substitution** based on vacation periods  
-- 🔹 **Predicting approvers** and auto-routing based on spending limits  
-- 🔹 **Auto-approving expenses** based on predefined compliance checks  
+🔹 **Automatic substitution** based on vacation periods  
+🔹 **Predicting approvers** and auto-routing based on spending limits  
+🔹 **Auto-approving expenses** based on predefined compliance checks  
 
 ---
 
