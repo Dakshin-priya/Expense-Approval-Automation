@@ -1,6 +1,5 @@
 # 💰 Expense Approval Workflow  
 
-![Block Diagram](assets/blockdiagram.jpeg)
 
 ## 📌 Problem Statement  
 Managing expense approvals manually can be time-consuming and inefficient, especially in organizations with multiple approvers and varying approval limits. The **Expense Approval Workflow** powered by a **Small Language Model (SLM)** streamlines this process by automating key aspects:  
@@ -19,7 +18,8 @@ This project leverages **Generative AI (GenAI)** to create an intelligent **expe
 ✔ **Auto-approves routine expenses** that meet compliance requirements.  
 
 ---
-
+![Block Diagram](assets/blockdiagram.jpeg)
+---
 ## 🚀 Key Features  
 
 ### ✅ Automatic Substitution for Vacations  
