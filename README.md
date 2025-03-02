@@ -49,7 +49,7 @@ This project leverages **Generative AI (GenAI)** to create an intelligent **expe
 ### 1️⃣ Install Dependencies
 Ensure Python 3.8+ is installed, then run:
 ```sh
-pip install -r requirements.txt
+pip install flask flask-cors psycopg2-binary transformers torch safetensors
 ```
 
 ### 2️⃣ Set Up the Database
@@ -62,6 +62,10 @@ python manage.py migrate
 Run the following command:
 ```sh
 flask run
+```
+or
+```sh
+python -m flask run
 ```
 By default, it runs on [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 
