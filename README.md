@@ -1,5 +1,7 @@
 # 💰 Expense Approval Workflow  
 
+![Block Diagram](assets/blockdiagram.jpeg)
+
 ## 📌 Problem Statement  
 Managing expense approvals manually can be time-consuming and inefficient, especially in organizations with multiple approvers and varying approval limits. The **Expense Approval Workflow** powered by a **Small Language Model (SLM)** streamlines this process by automating key aspects:  
 
