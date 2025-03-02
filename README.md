@@ -37,10 +37,12 @@ This project leverages **Generative AI (GenAI)** to create an intelligent **expe
 ---
 
 ## ⚙️ Tech Stack  
-- **🖥 Backend**: Flask  
+- **🎨 Frontend**: HTML, CSS, JavaScript  
+- **🛠 Framework**: Flask (Backend)  
+- **💻 Backend**: Python (Flask)  
 - **🗄 Database**: PostgreSQL  
 - **🤖 ML Model**: DistilBERT (Hugging Face Transformers)  
-- **📚 Libraries**: Flask-CORS, psycopg2-binary, transformers, torch  
+- **📚 Libraries**: Flask-CORS, psycopg2-binary, transformers, torch    
 
 ---
 
