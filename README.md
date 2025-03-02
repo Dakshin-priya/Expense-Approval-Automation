@@ -85,3 +85,84 @@ By default, it runs on [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
   }
   
 ---
+
+## 🎯 Running the Frontend
+
+To integrate with your frontend, use JavaScript to send API requests:
+
+```js
+async function classifyExpense() {
+    let category = document.getElementById("category-input").value;
+    let amount = document.getElementById("amount-input").value;
+
+    let response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ expenseCategory: category, amount: amount })
+    });
+
+    let result = await response.json();
+    document.getElementById("result").innerText = "Prediction: " + result.predicted_class;
+}
+```
+
+---
+
+## 🛠 Setting Up the Model
+
+### 1️⃣ Store Model Locally
+Ensure the model file is in your project directory:
+
+```python
+model_path = r"C:\Users\Dakshin Priya\Your-Project-Folder\model.safetensors"
+model = load_model(model_path)
+```
+
+### 2️⃣ Automate Model Download (Optional)
+If not stored locally, download it dynamically:
+
+```python
+import os
+import requests
+
+model_path = "model.safetensors"
+if not os.path.exists(model_path):
+    url = "https://your-drive-link/model.safetensors"
+    response = requests.get(url)
+    with open(model_path, "wb") as f:
+        f.write(response.content)
+
+model = load_model(model_path)
+```
+
+Replace `https://your-drive-link/model.safetensors` with the actual download URL.
+
+---
+
+## 📌 Why Use a Virtual Environment?
+
+Creating a virtual environment prevents conflicts between dependencies. Follow these steps:
+
+### 1️⃣ Install Virtualenv
+```sh
+pip install virtualenv
+```
+
+### 2️⃣ Create and Activate a Virtual Environment
+```sh
+python -m venv venv
+```
+
+#### Windows
+```sh
+venv\Scripts\activate
+```
+
+#### macOS/Linux
+```sh
+source venv/bin/activate
+```
+
+To deactivate the virtual environment, run:
+```sh
+deactivate
